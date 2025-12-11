@@ -2,11 +2,13 @@
 #include <string.h>
 #include <sys/wait.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 #define BUFFER_SIZE 1024
 
 const char WELCOME_MSG[] = "Bienvenue dans le Shell ENSEA.\nPour quitter taper 'exit'\n";
-const char PROMPT[] = "enseash % ";
+    
+char prompt[50] = "enseash % "; // prompt is now a variable
 
 int main(void) {
     char buffer[BUFFER_SIZE];
@@ -16,18 +18,16 @@ int main(void) {
     write(STDOUT_FILENO, WELCOME_MSG, strlen(WELCOME_MSG));
     
     while (1) {
-        write(STDOUT_FILENO, PROMPT, strlen(PROMPT));
+        write(STDOUT_FILENO, prompt, strlen(prompt));
 
         bytes_read = read(STDIN_FILENO, buffer, BUFFER_SIZE);
 
-        // for <ctrl>+d
-        if (bytes_read == 0) { // bytes_read is 0 when Ctrl+D
+        if (bytes_read == 0) {
             write(STDOUT_FILENO, "\nBye bye...\n", 12);
-            break; //exit while loop
+            break;
         }
 
-        // for command exit
-        if (bytes_read == 5 && strncmp(buffer, "exit", 4) == 0) { // string compare between buffer and 'exit' (only on 4 bytes to not include \0) and if bytes_read = 5
+        if (bytes_read == 5 && strncmp(buffer, "exit", 4) == 0) {
             write(STDOUT_FILENO, "Bye bye...\n", 11);
             break;
         }
@@ -43,6 +43,17 @@ int main(void) {
         } 
         else {
             wait(&status);
+            // update prompt for next call
+            if (WIFEXITED(status)) {
+                // progamm endend properly
+                int exit_code = WEXITSTATUS(status);
+                sprintf(prompt, "enseash [exit:%d] %% ", exit_code); 
+            } 
+            else if (WIFSIGNALED(status)) {
+                // programm has been killed
+                int signal_code = WTERMSIG(status);
+                sprintf(prompt, "enseash [sign:%d] %% ", signal_code);
+            }
         }
     }
 
