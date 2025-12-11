@@ -2,7 +2,7 @@
 
 * POLONOWSKI Nicolas
 * FADE Lizandre
-* 
+
 **Group :** 2G1TD2TP4
 **Date :** 11/12/2025
 
