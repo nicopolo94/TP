@@ -13,7 +13,7 @@ int main(void) {
     int status;
 
     // print the welcome message
-    write(STDOUT_FILENO, WELCOME_MSG, strlen(WELCOME_MSG)); // STDOUT_FILENO is the shell descriptor
+    write(STDOUT_FILENO, WELCOME_MSG, strlen(WELCOME_MSG)); // STDOUT_FILENO is the file descriptor
     
     return 0;
 }
