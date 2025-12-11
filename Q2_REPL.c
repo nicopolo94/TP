@@ -24,6 +24,8 @@ int main(void) {
         // read stop the programme until 'enter'
         bytes_read = read(STDIN_FILENO, buffer, BUFFER_SIZE);
 
+        buffer[bytes_read - 1] = '\0';
+
         // Execution of the command
         pid_t pid = fork();
 

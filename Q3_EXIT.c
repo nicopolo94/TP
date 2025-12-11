@@ -20,6 +20,8 @@ int main(void) {
 
         bytes_read = read(STDIN_FILENO, buffer, BUFFER_SIZE);
 
+        buffer[bytes_read - 1] = '\0';
+
         // for <ctrl>+d
         if (bytes_read == 0) { // bytes_read is 0 when Ctrl+D
             write(STDOUT_FILENO, "\nBye bye...\n", 12);

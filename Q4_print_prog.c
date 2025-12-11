@@ -21,6 +21,8 @@ int main(void) {
         write(STDOUT_FILENO, prompt, strlen(prompt));
 
         bytes_read = read(STDIN_FILENO, buffer, BUFFER_SIZE);
+        
+        buffer[bytes_read - 1] = '\0';
 
         if (bytes_read == 0) {
             write(STDOUT_FILENO, "\nBye bye...\n", 12);
